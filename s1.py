@@ -60,9 +60,12 @@ d = st.number_input("Enter year", min_value=1995, max_value=2019, value=2015)
 e = st.number_input("Kilometres driven", min_value=0, max_value=400000, value=30000)
 
 if st.button('Predict Price'):
-    inp = pd.DataFrame(
-        columns=['name', 'company', 'year', 'kms_driven', 'fuel_type'],
-        data=np.array([b, a, d, e, c]).reshape(1, 5)
-    )
+    inp = pd.DataFrame({
+        'name': [b],
+        'company': [a],
+        'year': [int(d)],          # ← explicitly cast to int
+        'kms_driven': [int(e)],    # ← explicitly cast to int
+        'fuel_type': [c]
+    })
     res = pipe1.predict(inp)
     st.success(f"💰 Estimated Car Price: ₹ {int(res[0]):,} INR")
