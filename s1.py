@@ -69,3 +69,4 @@ if st.button('Predict Price'):
     })
     res = pipe1.predict(inp)
     st.success(f"💰 Estimated Car Price: ₹ {int(res[0]):,} INR")
+    st.balloons()
