@@ -1,44 +1,13 @@
 import numpy as np
 import streamlit as st
-import pickle
 import pandas as pd
 import joblib
-# import scikit-learn==1.9.0
-import sklearn
-
-car=pd.read_csv('Cleaned_car.csv')
-car.drop(columns=['Unnamed: 0'],inplace=True)
-from sklearn.preprocessing import OneHotEncoder
-
-from sklearn.pipeline import Pipeline
-from sklearn.compose import ColumnTransformer
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import GradientBoostingRegressor,BaggingRegressor
-
-
-x=car.drop(columns='Price')
-y=car['Price']
-xtr,xte,ytr,yte =train_test_split(x,y,test_size=0.2,random_state=42)
-
-from sklearn.metrics import r2_score
-
-ohe = OneHotEncoder()
-ohe.fit(x[['name','company','fuel_type']])
-
-
-trf = ColumnTransformer([('ohe_cols', OneHotEncoder(categories=ohe.categories_), ['name', 'company', 'fuel_type'])], remainder='passthrough')
-
-clf1 =GradientBoostingRegressor(min_impurity_decrease=0.05,n_estimators=200,max_depth=5,learning_rate=.1)
-
-pipe1 =Pipeline(steps=[('trf',trf),('clf',clf1)])
-
-pipe1.fit(xtr,ytr)
 
 # print(r2_score(ytr,pipe1.predict(xtr)))
 
 
 st.title("CAR price predictor")
-
+car=pd.read_csv('Cleaned_car.csv')
 
 # model =pickle.load(open('LinearRegressionModel.pkl','rb'))
 # with open("gradientboosting.pkl", "rb") as f:
@@ -61,7 +30,8 @@ e=st.number_input("kms driven",0,400000)
 
 inp =pd.DataFrame(columns=['name', 'company', 'year', 'kms_driven', 'fuel_type'],
                   data=np.array([b,a,d,e,c]).reshape(1,5))
-# inp1=inp.astype(float)
+
+pipe1=joblib.load('car.joblib')
 
 if st.button('predict'):
     res=pipe1.predict(inp)
