@@ -61,9 +61,10 @@ e=st.number_input("kms driven",0,400000)
 
 inp =pd.DataFrame(columns=['name', 'company', 'year', 'kms_driven', 'fuel_type'],
                   data=np.array([b,a,d,e,c]).reshape(1,5))
+inp1=inp.astype(float)
 
 if st.button('predict'):
-    res=pipe1.predict(inp)
+    res=pipe1.predict(inp1)
     st.write(f"__car price is {res} INR__")
 
 # print
