@@ -6,8 +6,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
-# from xgboost import XGBRegressor
-# xgb=XGBRegressor()
+from xgboost import XGBRegressor
+xgb=XGBRegressor()
 
 st.set_page_config(page_title="Car Price Predictor", layout="centered")
 st.title("🚗 Car Price Predictor")
@@ -40,7 +40,7 @@ def train_model():
         max_depth=5,
         learning_rate=0.1
     )
-    pipe = Pipeline(steps=[('trf', trf), ('clf', clf)])
+    pipe = Pipeline(steps=[('trf', trf), ('clf', xgb)])
     pipe.fit(xtr, ytr)
     return pipe
 
